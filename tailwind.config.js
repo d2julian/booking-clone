@@ -8,6 +8,7 @@ module.exports = {
         "booking-button-hover": "#00487a",
         "booking-border": "#febb02",
         "booking-dark": "#00224f",
+        "booking-orange": "#febb02",
       },
       width: {
         "booking-1024": "1024px",
@@ -17,6 +18,10 @@ module.exports = {
       },
       fontSize: {
         xxs: "10px",
+      },
+      flexGrow: {
+        1: 1,
+        3: 3,
       },
     },
   },

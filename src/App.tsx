@@ -8,7 +8,7 @@ import Hotel from "./pages/Hotel";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate replace to="/home"></Navigate>}></Route>
+      <Route path="*" element={<Navigate replace to="/home"></Navigate>}></Route>
       <Route path="/home" element={<Home />}></Route>
       <Route path="/hotels" element={<List />}></Route>
       <Route path="/hotel/:id" element={<Hotel />}></Route>
