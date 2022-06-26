@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { destinationsInfoProp } from "../../types/types";
 
 function Property({ props }: destinationsInfoProp) {

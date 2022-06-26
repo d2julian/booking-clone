@@ -1,14 +1,12 @@
 import React from "react";
-import Header from "../components/header/Header";
-import HotelList from "../components/hotelList/HotelList";
-import Navbar from "../components/navbar/Navbar";
+import HotelResults from "../components/hotelResults/HotelResults";
 
 type Props = {};
 
 function List({}: Props) {
   return (
     <div>
-      <HotelList />
+      <HotelResults />
     </div>
   );
 }

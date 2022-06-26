@@ -9,6 +9,7 @@ module.exports = {
         "booking-border": "#febb02",
         "booking-dark": "#00224f",
         "booking-orange": "#febb02",
+        "booking-rating-color": "#febb02",
       },
       width: {
         "booking-1024": "1024px",

@@ -1,12 +1,14 @@
+import React, { useState, useReducer, useRef, useContext } from "react";
+import Options from "../option/Options";
+import InfoContext from "../../store/infoBooking";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBed, faPlane, faCar, faTaxi, faPersonSnowboarding, faCalendarDays, faPerson } from "@fortawesome/free-solid-svg-icons";
-import React, { useState, useReducer } from "react";
 import clsx from "clsx";
 import { DateRange, Range } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
-import Options from "../option/Options";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 type Props = {
   showSearcher: boolean;
@@ -19,24 +21,28 @@ const headerSearchItem = "flex items-center gap-2.5";
 const headerIcon = "text-gray-300";
 
 function Header({ showSearcher }: Props) {
-  const [dates, setDates] = useState<Range[]>([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-
-  const [showCalendar, setshowCalendar] = useState<boolean>(false);
-
-  const [showOptions, setOptions] = useState<boolean>(false);
-
   type stateProps = any;
 
   type actionProps = {
     type: string;
     item: string;
   };
+
+  const ctx = useContext(InfoContext);
+
+  const cityRef = useRef<HTMLInputElement>(null);
+
+  // const [dates, setDates] = useState<Range[]>([
+  //   {
+  //     startDate: new Date(),
+  //     endDate: new Date(),
+  //     key: "selection",
+  //   },
+  // ]);
+
+  const [showCalendar, setshowCalendar] = useState<boolean>(false);
+
+  const [showOptions, setOptions] = useState<boolean>(false);
 
   const optionsInitalState = {
     adult: 1,
@@ -56,6 +62,11 @@ function Header({ showSearcher }: Props) {
 
   const optionsHandler = (type: string, item: string) => {
     dispatch({ type: type, item: item });
+  };
+
+  const navigate = useNavigate();
+  const handleSearchClick = () => {
+    navigate("/hotels", { state: { city: cityRef.current?.value, options } });
   };
   return (
     <div className="flex justify-center bg-booking-blue text-white relative">
@@ -90,19 +101,19 @@ function Header({ showSearcher }: Props) {
             <div className="h-14 bg-white border-4 border-solid border-booking-border rounded flex items-center justify-around min-w-min py-2.5 px-0 absolute -bottom-6 w-full max-w-screen-lg">
               <div className={headerSearchItem}>
                 <FontAwesomeIcon icon={faBed} className={headerIcon} />
-                <input type="text" placeholder="¿Adónde vas?" className={"text-black border-none outline-none"} />
+                <input type="text" placeholder="¿Adónde vas?" className={"text-black border-none outline-none"} ref={cityRef} />
               </div>
               <div className={headerListItem}>
                 <FontAwesomeIcon icon={faCalendarDays} className={headerIcon} />
                 <span className={"text-gray-300 pointer"} onClick={() => setshowCalendar((prevState) => !prevState)}>
-                  {`${format(dates[0].startDate, "dd/MM/yyyy")} - ${format(dates[0].endDate, "dd/MM/yyyy")}`}
+                  {`${format(ctx.dates[0].startDate, "dd/MM/yyyy")} - ${format(ctx.dates[0].endDate, "dd/MM/yyyy")}`}
                 </span>
                 {showCalendar && (
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setDates([item.selection])}
+                    onChange={(item) => ctx.setDates([item.selection])}
                     moveRangeOnFirstSelection={false}
-                    ranges={dates}
+                    ranges={ctx.dates}
                     className="absolute top-14 z-20"
                   />
                 )}
@@ -122,7 +133,9 @@ function Header({ showSearcher }: Props) {
                 )}
               </div>
               <div className={headerSearchItem}>
-                <button className="bg-booking-button p-2.5 font-medium hover:bg-booking-button-hover">Buscar</button>
+                <button className="bg-booking-button p-2.5 font-medium hover:bg-booking-button-hover" onClick={handleSearchClick}>
+                  Buscar
+                </button>
               </div>
             </div>
           </>
